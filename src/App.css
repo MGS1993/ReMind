@@ -1,0 +1,48 @@
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.App {
+  height: 100vh;
+  width: 100vw;
+  background-color: rgb(208, 231, 224);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.choicesWrapper {
+  height: 80%;
+  width:60%;
+}
+.choicesHeader {
+  text-align: center;
+  height: 5%;
+  margin-top: 5%;
+}
+
+.btnWrapper {
+  height: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.btn {
+  height: 30px;
+  background-color: #7171f7;
+  color: white;
+  border: 1px solid #b0abab;
+  padding: 5px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.btn:hover {
+  background-color: #5757f3;
+}
+
+.btn:active {
+  background-color: #4646f5;
+}
