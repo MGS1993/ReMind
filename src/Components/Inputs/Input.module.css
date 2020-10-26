@@ -1,0 +1,5 @@
+.inputWrapper {
+  flex-grow: 1;
+  border-right: 1px solid #e3e3e3;
+  box-shadow: 12px 1px 15px -13px rgba(0,0,0,0.29);
+}
