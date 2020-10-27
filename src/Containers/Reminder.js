@@ -3,6 +3,8 @@ import Layout from '../Components/Layout/Layout';
 import Input from '../Components/Inputs/Input';
 import Display from '../Components/Display/Display';
 import Item from '../Components/ReminderItems/Item';
+import firebase from 'firebase';
+
 class Reminder extends Component {
   state = {
     Items: [
@@ -12,6 +14,39 @@ class Reminder extends Component {
 
   }
 
+  componentDidMount() {
+    this.getUserData();
+    
+  }
+ 
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState !== this.state) {
+      this.writeUserData();
+    }
+  }
+
+  componentWillUnmount() {
+    let ref = firebase.database().ref('/reminders');
+    ref.off()
+    console.log("component unmounted")
+  }
+
+
+  writeUserData = () => {
+    firebase.database().ref('/reminders').set(this.state);
+    console.log('DATA SAVED aka component updated');
+  }
+  
+  getUserData = () => {
+    let ref = firebase.database().ref('/reminders');
+    ref.on('value', snapshot => {
+      const state = snapshot.val();
+      this.setState(state);
+    });
+    console.log('DATA RETRIEVED aka component mounted');
+  }
+  
 handleSubmit = (e) => {
   e.preventDefault();
   let titleValue = this.state.reminderTitle;
@@ -25,6 +60,7 @@ handleSubmit = (e) => {
   this.setState({
     Items: modifiedState
   })
+  
 }
 handleTitleChange = (e) => {
   this.setState({
