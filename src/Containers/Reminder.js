@@ -19,10 +19,14 @@ class Reminder extends Component {
     
   }
  
-
+  shouldComponentUpdate(nextProps, nextState) {
+    return (nextState.Items !== this.state.Items? 1 : 0)
+  }
+  
   componentDidUpdate(prevProps, prevState) {
     if (prevState !== this.state) {
       this.writeUserData();
+      console.log('[Reminder.js] updated...');
     }
   }
 
@@ -35,7 +39,7 @@ class Reminder extends Component {
 
   writeUserData = () => {
     firebase.database().ref('/reminders').set(this.state);
-    console.log('DATA SAVED aka component updated');
+    
   }
   
   getUserData = () => {
@@ -44,7 +48,7 @@ class Reminder extends Component {
       const state = snapshot.val();
       this.setState(state);
     });
-    console.log('DATA RETRIEVED aka component mounted');
+    console.log('[Reminder.js] mounted...');
   }
   
 handleSubmit = (e) => {
@@ -73,8 +77,11 @@ handleDescChange = (e) => {
   })
 }
 handleDueDateChange = (e) => {
+  let date = new Date(e.target.value)
+  let day = date.getDate() + 1;
+  
   this.setState({
-    [e.target.name]: e.target.value
+    [e.target.name]: this.getDayOfWeek(e.target.value)+ ' ' + this.getMonth(e.target.value) + ' ' + day 
   })
 }
 
@@ -84,11 +91,36 @@ completedHandler = (taskIndex) => {
   this.setState({Items: tasks})
 }
 
+ getDayOfWeek = (date) => {
+  const dayOfWeek = new Date(date).getDay();    
+  return isNaN(dayOfWeek) ? null : 
+    ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][dayOfWeek];
+}
 
+getMonth = (date) => {
+  const month = new Date(date).getMonth(); 
+  return isNaN(month) ? null : 
+   ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec"][month];
+}
+
+// getDay = (date) => {
+//   let
+//     str = date,
+//     parts = str.split('-'),
+//     // year = parseInt(parts[2], 10),
+//     // month = parseInt(parts[1], 10) - 1, // NB: month is zero-based!
+//     day = parseInt(parts[0], 10),
+//     dayOnly = new Date( day);
+
+//     return dayOnly
+// }
   render(){
+    console.log('[Reminder.js] rendering...')
+    let tempState = [...this.state.Items]
       let items = (
         <React.Fragment>
-          {this.state.Items.map((item, index) => {
+          {tempState.map((item, index) => {
+            console.log('mapping state to Item...')
             return <Item 
             key={Math.random()*10}
             title={item.taskTitle}

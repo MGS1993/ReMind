@@ -1,5 +1,66 @@
 .inputWrapper {
   flex-grow: 1;
+  position: sticky;
   border-right: 1px solid #e3e3e3;
   box-shadow: 12px 1px 15px -13px rgba(0,0,0,0.29);
+  max-width: 250px;
+  background-color: #EAE7E7;
 }
+
+.form {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 100%;
+}
+
+.form > div {
+  margin: 2% 0
+}
+
+.textInput {
+  border-radius: 9px;
+  padding: 0 16px;
+  height: 30px;
+  border: 1px solid #cabfbf;
+  transition: .1s ease-in;
+}
+
+.textInput:focus {
+  border-color: rgb(122, 122, 223);
+}
+
+.dateInput {
+  border-radius: 9px;
+  padding: 0 20px;
+  height: 23px;
+  border: 1px solid #cabfbf;
+  color: gray;
+}
+
+.dateInput:focus {
+  color: rgb(88, 88, 233);
+}
+
+.submitBtn {
+  height: 23px;
+  width: 56px;
+  background-color: white;
+  border: 1px solid #a8a8f8;
+  border-radius: 3px;
+  transition: .2s ease;
+}
+
+
+.submitBtn:hover {
+  background-color: rgb(116, 116, 233);
+  color: white;
+  font-weight: bold;
+}
+
+.submitBtn:active {
+  background-color: rgb(74, 74, 236);
+}
+
+

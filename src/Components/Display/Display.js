@@ -1,10 +1,12 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import styles from './Display.module.css';
 
 
 const Display = (props) => {
 
-
+useEffect(()=> {
+  console.log("[Display.js] rendering...")
+})
   return (
     <div className={styles.displayWrapper}>
       <div className={styles.displayHeader}>Reminders</div>
@@ -15,4 +17,4 @@ const Display = (props) => {
   )
 }
 
-export default Display
+export default React.memo(Display)
