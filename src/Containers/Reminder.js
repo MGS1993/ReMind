@@ -4,18 +4,22 @@ import Input from '../Components/Inputs/Input';
 import Display from '../Components/Display/Display';
 import Item from '../Components/ReminderItems/Item';
 import firebase from 'firebase';
+import {  format, add } from 'date-fns';
 
 class Reminder extends Component {
   state = {
     Items: [
 
     ],
+    today: null,
+    tomorrow: null
     
 
   }
 
   componentDidMount() {
     this.getUserData();
+    this.setWeekFrame();
     
   }
  
@@ -34,6 +38,7 @@ class Reminder extends Component {
     let ref = firebase.database().ref('/reminders');
     ref.off()
     console.log("component unmounted")
+    // console.log(formatDistanceStrict(this.state.today, this.state.tomorrow))
   }
 
 
@@ -50,12 +55,37 @@ class Reminder extends Component {
     });
     console.log('[Reminder.js] mounted...');
   }
+
+  setWeekFrame = () => {
+    const now = new Date();
+
+    const nextWeek = add(new Date(now), {
+      weeks: 1
+    })
+
+    let tomorrow = add(new Date(now), {
+      days: 1
+    })
+
+    
+    this.setState({
+      today: now,
+      tomorrow: tomorrow,
+      nextWeek: nextWeek
+    })
+    console.log('setWeekFrame ran...')
+
+  }
   
+
+
 handleSubmit = (e) => {
   e.preventDefault();
   let titleValue = this.state.reminderTitle;
   let descValue = this.state.reminderDescription;
   let dateValue = this.state.reminderDueDate;
+  // let dateCategory 
+  // this.dateCategoryHandler()
 
   let newState = {taskTitle: titleValue, taskDescription: descValue, taskDueDate: dateValue}
 
@@ -77,11 +107,14 @@ handleDescChange = (e) => {
   })
 }
 handleDueDateChange = (e) => {
+  ///main logic code for chosen date in calender
   let date = new Date(e.target.value)
-  let day = date.getDate() + 1;
-  
+
+  let formattedDate = add(new Date(date), {days: 1})
+  let completeFormat = format(formattedDate, 'ccc, MMM do')
+
   this.setState({
-    [e.target.name]: this.getDayOfWeek(e.target.value)+ ' ' + this.getMonth(e.target.value) + ' ' + day 
+    [e.target.name]: completeFormat
   })
 }
 
@@ -103,17 +136,7 @@ getMonth = (date) => {
    ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec"][month];
 }
 
-// getDay = (date) => {
-//   let
-//     str = date,
-//     parts = str.split('-'),
-//     // year = parseInt(parts[2], 10),
-//     // month = parseInt(parts[1], 10) - 1, // NB: month is zero-based!
-//     day = parseInt(parts[0], 10),
-//     dayOnly = new Date( day);
 
-//     return dayOnly
-// }
   render(){
     console.log('[Reminder.js] rendering...')
     let tempState = [...this.state.Items]
